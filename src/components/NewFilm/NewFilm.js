@@ -17,22 +17,16 @@ import NavBar from '../NavBar/NavBar';
 
 
 //toast.configure();
-const TextFieldWithValidation = withStyles({
+
+const StyledTextField = withStyles({
     root: {
-      marginBottom: "10px",
-      "& input:invalid:focus": {
-        borderColor: "red",
-      },
+        '&.Mui-focused fieldset': {
+            borderColor: 'yellow',
+          },
     },
   })(TextField);
+  
 
-  const SelectWithValidation = withStyles({
-    root: {
-      "& input:invalid:focus ~ fieldset": {
-        borderColor: "red",
-      },
-    },
-  })(Select);
 
 class NewFilm extends Component{
     constructor(props) {
@@ -119,9 +113,6 @@ class NewFilm extends Component{
             };
             console.log(newFilm);
             this.props.addFilm(newFilm);
-
-            //this.props.onFilmAdd(newFilm);
-            //this.props.onNewFilm();
             this.setState({
                 title: '',
                 year: 0,
@@ -158,88 +149,89 @@ class NewFilm extends Component{
         return (
             <div>
                 <NavBar />
-                <div>
-                    <form onSubmit={this.handleSubmitFile}>
-                        <TextField 
-                        error={!!this.state.fileError}
-                        type="file" 
-                        required id="file" 
-                        label="File"
-                        helperText={this.state.fileError} 
-                        />
-                        <div>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                        >
-                            Add
-                        </Button>
-                        </div>
-                    </form>
-                </div>
-                <div>
-                <form onSubmit={this.handleSubmit}>
-                <div className='new-film'>
-                    <TextField 
-                        error={!!this.state.titleError}
-                        required
-                        variant='outlined' 
-                        label="Title"
-                        value={this.state.title}
-                        name='title'
-                        onChange={this.handleInputChange}
-                        helperText={this.state.titleError}
-                    />
-                    <TextField
-                        error={!!this.state.yearError}
-                        variant='outlined'
-                        required
-                        type='number'
-                        label='Year'
-                        value={this.state.year}
-                        name='year'
-                        onChange={this.handleInputChange}
-                        helperText={this.state.yearError}
-                    />
-                    <InputLabel id="format-label">Format</InputLabel>
-                        <Select
+                <div className='content'>
+                    <div className='block-form'>
+                        <form className='new-film-form' onSubmit={this.handleSubmitFile}>
+                            <TextField 
+                            className='form-field'
+                            error={!!this.state.fileError}
+                            type="file" 
+                            required id="file" 
+                            label="File"
+                            helperText={this.state.fileError} 
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                Add
+                            </Button>
+                        </form>
+                    </div>
+                    <div className='block-form'>
+                    <form className='new-film-form' onSubmit={this.handleSubmit}>
+                        <StyledTextField 
+                            className='form-field'
+                            error={!!this.state.titleError}
                             required
-                            variant="outlined"
-                            size="small"
-                            labelId="format-label"
-                            id="format-id"
-                            value={this.state.format}
-                            name='format'
+                            variant='outlined' 
+                            label="Title"
+                            value={this.state.title}
+                            name='title'
                             onChange={this.handleInputChange}
-                        >
-                            <MenuItem value="DVD">DVD</MenuItem>
-                            <MenuItem value="VHS">VHS</MenuItem>
-                            <MenuItem value="Blu-Ray">Blu-Ray</MenuItem>
-                        </Select>
-                    <TextField
-                        required
-                        error={!!this.state.starsError}
-                        label='Stars'
-                        variant='outlined'
-                        value={this.state.stars}
-                        name='stars'
-                        onChange={this.handleInputChange}
-                        helperText={this.state.starsError}
-                    />
-                    <div className='NewFilm__footer'>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                        >
-                            Add
-                        </Button>
+                            helperText={this.state.titleError}
+                        />
+                        <TextField
+                            className='form-field'
+                            error={!!this.state.yearError}
+                            variant='outlined'
+                            required
+                            type='number'
+                            label='Year'
+                            value={this.state.year}
+                            name='year'
+                            onChange={this.handleInputChange}
+                            helperText={this.state.yearError}
+                        />
+                        <InputLabel id="format-label">Format</InputLabel>
+                            <Select
+                                className='form-field'
+                                required
+                                variant="outlined"
+                                size="small"
+                                labelId="format-label"
+                                id="format-id"
+                                value={this.state.format}
+                                name='format'
+                                onChange={this.handleInputChange}
+                            >
+                                <MenuItem value="DVD">DVD</MenuItem>
+                                <MenuItem value="VHS">VHS</MenuItem>
+                                <MenuItem value="Blu-Ray">Blu-Ray</MenuItem>
+                            </Select>
+                            <TextField
+                                className='form-field'
+                                required
+                                error={!!this.state.starsError}
+                                label='Stars'
+                                variant='outlined'
+                                value={this.state.stars}
+                                name='stars'
+                                onChange={this.handleInputChange}
+                                helperText={this.state.starsError}
+                            />
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                Add
+                            </Button>
+                        <div>
+                        </div>
+                </form>
                     </div>
-                    <div>
-                    </div>
-                </div>
-            </form>
                 </div>
             </div>
             
