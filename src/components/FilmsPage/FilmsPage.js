@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchFilms, searchFilms } from '../../redux/actions';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import NavBar from '../NavBar/NavBar';
 import FilmsList from './FilmList';
+
+import './FilmList.css'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
       width: '25ch',
     },
   },
+  input: {
+      marginRight: '20px'
+  }
 }));
 
 const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
@@ -48,10 +54,11 @@ const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
     }
 
     function sortChangeHandler() {
-        sortOrder === 'asc' ? 
-        setSortOrder('desc') :
-        setSortOrder('asc');
-        sortFilms(allFilms, sortOrder)
+        const order = sortOrder === 'asc'
+        ? 'desc'
+        : 'asc'
+
+        setSortOrder(order);
     }
 
     function sortFilms(arrOfFilms, order) {
@@ -71,12 +78,32 @@ const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
     return(
         <div>
             <NavBar />
-            <div className={classes.root}>
-                <TextField id="standard-search" value={searchTitle} onChange={e => searchTitleChangeHanler(e)} label="Search by title" type="search" />
-                <input value={searchStar} onChange={e => searchStarChangeHanler(e)} type='text' placeholder='star'/>
-                <button onClick={() => sortChangeHandler()}>{sortOrder === 'asc' ? 'A - Z' : 'Z - A'}</button>
+            <div className='searchWrapper'>
+                <TextField
+                    value={searchTitle}
+                    onChange={e => searchTitleChangeHanler(e)}
+                    label="Search by title"
+                    type="search"
+                    variant="outlined"
+                    className={classes.input}
+                />
+                <TextField
+                    value={searchStar}
+                    onChange={e => searchStarChangeHanler(e)}
+                    label="Search by star"
+                    type="search"
+                    variant="outlined"
+                    className='test'
+                    className={classes.input}
+                />
+                <Button
+                    onClick={() => sortChangeHandler()}
+                    color="primary"
+                >
+                        {sortOrder === 'asc' ? 'A - Z' : 'Z - A'}
+                </Button>
             </div>
-            <FilmsList films = { allFilms }/>
+            <FilmsList films = { allFilms } order={sortOrder}/>
         </div>
         
     )

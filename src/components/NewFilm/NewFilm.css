@@ -21,13 +21,7 @@
     height: 350px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
-.form-field { 
-    /* width: 260px;
-    height: 30px;
-    margin: 30px; */
-    
-}

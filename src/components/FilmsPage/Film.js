@@ -1,12 +1,43 @@
 import './FilmList.css'
 import React from 'react';
 import { NavLink } from "react-router-dom";
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
 
-function Film(props){
+function Film({handleDelete, film}){
+
+    function handleDeleteFilm(e) {
+        e.preventDefault()
+
+        handleDelete(film._id)
+    }
+
     return (
-        <NavLink className='film' exact to={`/about/${props.film._id}`}>
-            <div className='film-title' onClick={() => {props.handleDelete(props.film._id)}}>{props.film.title}</div>
-            <div className='film-year'>{props.film.year}</div>      
+        <NavLink
+            className='film'
+            exact
+            to={`/about/${film._id}`}
+            style={{
+                backgroundImage: `url(https://picsum.photos/200/300?random=${Math.floor(Math.random() * 100)})`
+            }}
+        >
+            <Button
+                color='secondary'
+                className='deleteIcon'
+                onClick={handleDeleteFilm}
+            >
+                <DeleteIcon />
+            </Button>
+            <div className='nameWrapper'>
+                <div
+                    className='film-title'
+                >
+                    {film.title}
+                </div>
+                <div className='film-year'>
+                    {film.year}
+                </div>
+            </div>     
         </NavLink>
     )
 }

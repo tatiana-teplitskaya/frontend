@@ -18,14 +18,6 @@ import NavBar from '../NavBar/NavBar';
 
 //toast.configure();
 
-const StyledTextField = withStyles({
-    root: {
-        '&.Mui-focused fieldset': {
-            borderColor: 'yellow',
-          },
-    },
-  })(TextField);
-  
 
 
 class NewFilm extends Component{
@@ -171,7 +163,7 @@ class NewFilm extends Component{
                     </div>
                     <div className='block-form'>
                     <form className='new-film-form' onSubmit={this.handleSubmit}>
-                        <StyledTextField 
+                        <TextField 
                             className='form-field'
                             error={!!this.state.titleError}
                             required
