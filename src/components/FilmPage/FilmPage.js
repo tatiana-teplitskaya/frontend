@@ -4,19 +4,19 @@ import './FilmPage.css';
 import { fetchFilm } from '../../redux/actions';
 
 const FilmPage = ({ film, fetchFilm, match}) => {
+
+    console.log('match.params.id', match.params.id);
     useEffect(() => {
         fetchFilm(match.params.id);
     }, [fetchFilm, match.params.id]);
 
-    console.log(film);
+    console.log('test: ', film);
     return (
         <div className='film'>
-            <p>{film.title}</p>
-            <p>{film.year}</p>
-            <p>{film.format}</p>
-            <p>{film.stars.join(', ')}</p>      
-            {/* <div>{props.film.format}</div> 
-            <div>{props.film.actors.join(', ')}</div>      */}
+            <p>Title: {film.title}</p>
+            <p>Release year: {film.year}</p>
+            <p>Format: {film.format}</p>
+            <p>Stars: {film.stars?.join(', ')}</p>      
         </div>
     )
 }

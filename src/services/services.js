@@ -11,6 +11,7 @@ export async function getFilms(){
 
 export async function getFilmById(id){
     try {
+        console.log('ingetfilmbyid');
         const response = await fetch(`http://localhost:8080/films/${id}`);
         const json = await response.json();
         return json;

@@ -39,9 +39,13 @@ class NewFilm extends Component{
         super(props);
         this.state = {
             title: '',
+            titleError: '',
             year: 0,
+            yearError: '',
             format: '',
+            formatError: '',
             stars: '',
+            starsError: '',
             //file: '',
             fileError: ''
     }
@@ -52,11 +56,13 @@ class NewFilm extends Component{
         this.setState( prev => (
             e.target.name === 'stars' ?
                 {...prev, ...{
-                    [e.target.name]: e.target.value.split(',')
+                    [e.target.name]: e.target.value.split(','),
+                    [`${e.target.name}Error`]: ''
                 }}
             :
                 {...prev, ...{
-                [e.target.name]: e.target.value
+                [e.target.name]: e.target.value,
+                [`${e.target.name}Error`]: ''
         }}))
     }
 
@@ -68,26 +74,61 @@ class NewFilm extends Component{
     //     }}))
     // }
 
+    validate = () => {
+        let isError = false;
+        const errors = {
+          titleError: '',
+          yearError: '',
+          starsError: '',
+        };
+    
+        if (this.state.title.length < 2 || this.state.title.toString().trim().length === 0) {
+          isError = true;
+          errors.titleError = "Title needs to be atleast 2 characters long";
+        }
+
+        if (this.state.year < 1850 || this.state.year > 2021) {
+            isError = true;
+            errors.yearError = "Year must be greater than 1850 and less than 2021";
+        }
+
+        if (!(this.state.stars).toString().match(/^[A-Za-zА-Яа-яЁё, ]*$/)) {
+            isError = true;
+            errors.starsError = "Stars field should not contain numbers or symbols(exept ',')";
+          }
+
+    
+        this.setState({
+          ...this.state,
+          ...errors
+        });
+    
+        return isError;
+      };
+
     handleSubmit = (e) => {
         e.preventDefault();
-        const newFilm = {
-            id: Date.now().toString(),
-            title: this.state.title,
-            year: this.state.year,
-            format: this.state.format,
-            stars: this.state.stars
-        };
-        console.log(newFilm);
-        this.props.addFilm(newFilm);
+        const err = this.validate();
+        if (!err) {
+            const newFilm = {
+                id: Date.now().toString(),
+                title: this.state.title,
+                year: this.state.year,
+                format: this.state.format,
+                stars: this.state.stars
+            };
+            console.log(newFilm);
+            this.props.addFilm(newFilm);
 
-        //this.props.onFilmAdd(newFilm);
-        //this.props.onNewFilm();
-        this.setState({
-            title: '',
-            year: 0,
-            format: '',
-            stars: []
-        })
+            //this.props.onFilmAdd(newFilm);
+            //this.props.onNewFilm();
+            this.setState({
+                title: '',
+                year: 0,
+                format: '',
+                stars: []
+            })
+        }
     }
 
     handleSubmitFile = async (e) => {
@@ -95,16 +136,18 @@ class NewFilm extends Component{
         const file = e.target.file.files[0];
         console.log(e.target)
         if (file.type === "text/plain") {
-          let newFilms = [];
-          var reader = new FileReader();
-          reader.readAsText(file);
-          reader.onload = e => {
-            newFilms = getArrOfFilms(reader.result.split("\n"));
-            newFilms.forEach(film => this.props.addFilm(film));
-          };
+            this.setState({
+                fileError: ''
+            }) 
+            let newFilms = [];
+            var reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = e => {
+                newFilms = getArrOfFilms(reader.result.split("\n"));
+                newFilms.forEach(film => this.props.addFilm(film));
+            };
         } else {
             this.setState({
-                file: '',
                 fileError: 'Please choose .txt file'
             })
             console.log('else');
@@ -118,7 +161,7 @@ class NewFilm extends Component{
                 <div>
                     <form onSubmit={this.handleSubmitFile}>
                         <TextField 
-                        error
+                        error={!!this.state.fileError}
                         type="file" 
                         required id="file" 
                         label="File"
@@ -138,27 +181,29 @@ class NewFilm extends Component{
                 <div>
                 <form onSubmit={this.handleSubmit}>
                 <div className='new-film'>
-                    <TextFieldWithValidation 
-                        error={false}
+                    <TextField 
+                        error={!!this.state.titleError}
                         required
                         variant='outlined' 
                         label="Title"
                         value={this.state.title}
                         name='title'
                         onChange={this.handleInputChange}
+                        helperText={this.state.titleError}
                     />
-                    <TextFieldWithValidation
+                    <TextField
+                        error={!!this.state.yearError}
                         variant='outlined'
-                        inputProps={{ max: "2021", min: "1895" }}
                         required
                         type='number'
                         label='Year'
                         value={this.state.year}
                         name='year'
                         onChange={this.handleInputChange}
+                        helperText={this.state.yearError}
                     />
                     <InputLabel id="format-label">Format</InputLabel>
-                        <SelectWithValidation
+                        <Select
                             required
                             variant="outlined"
                             size="small"
@@ -171,14 +216,16 @@ class NewFilm extends Component{
                             <MenuItem value="DVD">DVD</MenuItem>
                             <MenuItem value="VHS">VHS</MenuItem>
                             <MenuItem value="Blu-Ray">Blu-Ray</MenuItem>
-                        </SelectWithValidation>
-                    <TextFieldWithValidation
+                        </Select>
+                    <TextField
+                        required
+                        error={!!this.state.starsError}
                         label='Stars'
                         variant='outlined'
-                        inputProps={{ pattern: "^[A-Za-zА-Яа-яЁё ]*$" }}
                         value={this.state.stars}
                         name='stars'
                         onChange={this.handleInputChange}
+                        helperText={this.state.starsError}
                     />
                     <div className='NewFilm__footer'>
                         <Button
