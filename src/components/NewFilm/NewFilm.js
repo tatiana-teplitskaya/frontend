@@ -2,21 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { 
     TextField,
-    Select,
-    MenuItem,
-    InputLabel,
     Button,
-    withStyles
 } from '@material-ui/core';
 import './NewFilm.css';
-//import { toast } from 'react-toastify';
-//import 'react-toastify/dist/ReactTostify.css';
 import { addFilm } from '../../redux/actions';
 import { getArrOfFilms } from '../../helpers/filmsFormater';
 import NavBar from '../NavBar/NavBar';
-
-
-//toast.configure();
 
 
 
@@ -32,7 +23,6 @@ class NewFilm extends Component{
             formatError: '',
             stars: '',
             starsError: '',
-            //file: '',
             fileError: '',
             file: {}
     }
@@ -152,8 +142,9 @@ class NewFilm extends Component{
             <div>
                 <NavBar />
                 <div className='content'>
-                    <div className='block-form'>
-                        <form className='new-film-form' onSubmit={this.handleSubmitFile}>
+                    <div className='block-form-file'>
+                        <p className='text-header'>Import movies from file</p>
+                        <form className='new-file-form' onSubmit={this.handleSubmitFile}>
                             <div className='input-wrapper'>
                                 <Button
                                     className='input-button'
@@ -182,11 +173,12 @@ class NewFilm extends Component{
                                 variant="contained"
                                 color="primary"
                             >
-                                Add
+                                Import
                             </Button>
                         </form>
                     </div>
                     <div className='block-form'>
+                    <p className='text-header'>Create new movie</p>
                     <form className='new-film-form' onSubmit={this.handleSubmit}>
                         <TextField 
                             className='form-field'
@@ -211,23 +203,31 @@ class NewFilm extends Component{
                             onChange={this.handleInputChange}
                             helperText={this.state.yearError}
                         />
-                        <InputLabel id="format-label">Format</InputLabel>
-                            <Select
+                        <TextField
+                                select
                                 className='form-field'
                                 required
                                 variant="outlined"
-                                size="small"
-                                labelId="format-label"
+                                label='Format'
                                 id="format-id"
                                 value={this.state.format}
                                 name='format'
-                                // label='Format'
+                                SelectProps={{
+                                    native: true,
+                                  }}
                                 onChange={this.handleInputChange}
-                            >
-                                <MenuItem value="DVD">DVD</MenuItem>
-                                <MenuItem value="VHS">VHS</MenuItem>
-                                <MenuItem value="Blu-Ray">Blu-Ray</MenuItem>
-                            </Select>
+                            >   
+                                <option aria-label="None" value="" />
+                                <option key='DVD' value='DVD'>
+                                    DVD
+                                </option>
+                                <option key='VHS' value='VHS'>
+                                    VHS
+                                </option>
+                                <option key='Blu-Ray' value='Blu-Ray'>
+                                    Blu-Ray
+                                </option>
+                            </TextField>
                             <TextField
                                 className='form-field'
                                 required
@@ -244,7 +244,7 @@ class NewFilm extends Component{
                                 variant="contained"
                                 color="primary"
                             >
-                                Add
+                                Create
                             </Button>
                         <div>
                         </div>

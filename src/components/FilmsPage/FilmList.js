@@ -19,7 +19,9 @@ const FilmList = ({ films, deleteFilm, order}) => {
     }
 
     if(!films.length) {
-        return <p className='text-center'>There are no films yet</p>
+        return (<div className='center'>
+            <p className='text-center'>There are no films</p>
+                </div>)
     }
 
     let filmList = films.sort(sortFilms).map( (film) => {

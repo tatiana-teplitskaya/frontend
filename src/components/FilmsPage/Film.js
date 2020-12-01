@@ -17,9 +17,6 @@ function Film({handleDelete, film}){
             className='film'
             exact
             to={`/about/${film._id}`}
-            style={{
-                backgroundImage: `url(https://picsum.photos/200/300?random=${Math.floor(Math.random() * 100)})`
-            }}
         >
             <Button
                 color='secondary'
