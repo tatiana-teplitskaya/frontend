@@ -1,4 +1,9 @@
-import { ADD_FILM_SUCCESS, FETCH_FILMS, FETCH_FILM, DELETE_FILM_SUCCESS } from './types';
+import { ADD_FILM_SUCCESS, 
+         FETCH_FILMS,   
+         FETCH_FILM,
+         DELETE_FILM_SUCCESS,
+         SHOW_LOADER,
+         HIDE_LOADER } from './types';
 
 export const film = (state = {}, action) => {
     switch(action.type){
@@ -18,5 +23,14 @@ export const films = (state = [], action) => {
             //return {...state, films: deleteFilm(state.films, action.payload.id)}
             return state.filter(film => film._id !== action.payload.id)
         default: return state
+    }
+}
+
+export const loader = (state = {isLoading: false}, action) => {
+    switch (action.type) {
+        case SHOW_LOADER: return {...state, isLoading: true}
+        case HIDE_LOADER: return {...state, isLoading: false}
+        default:
+            return state
     }
 }

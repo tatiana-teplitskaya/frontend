@@ -112,7 +112,6 @@ const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
 
 const mapStateToProps = state => {
 
-    console.log(state)
     return {
         allFilms: state.films
     }

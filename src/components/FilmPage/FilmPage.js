@@ -4,14 +4,24 @@ import './FilmPage.css';
 import NavBar from '../NavBar/NavBar';
 import { fetchFilm } from '../../redux/actions';
 
-const FilmPage = ({ film, fetchFilm, match}) => {
+const FilmPage = ({ film, loader, fetchFilm, match}) => {
 
-    console.log('match.params.id', match.params.id);
     useEffect(() => {
         fetchFilm(match.params.id);
     }, [fetchFilm, match.params.id]);
 
-    console.log('test: ', film);
+
+    if(loader){
+        return (
+            <div>
+                <NavBar/>
+                <div className="loader">
+                    <div className="lds-dual-ring"></div>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div>
             <NavBar/>
@@ -26,7 +36,8 @@ const FilmPage = ({ film, fetchFilm, match}) => {
 }
 
 const mapStateToProps = state => ({
-    film: state.film
+    film: state.film,
+    loader: state.loader.isLoading
 })
 
 const mapDispatchToProps = {

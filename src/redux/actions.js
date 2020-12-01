@@ -1,15 +1,11 @@
 import { 
-    ADD_FILM,
     ADD_FILM_SUCCESS,
     FETCH_FILMS,
     FETCH_FILM,
-    FETCH_START,
     FETCH_ERROR,
     SHOW_LOADER,
-    HIDE_FILMS,
-    DELETE_FILM,
+    HIDE_LOADER,
     DELETE_FILM_SUCCESS,
-    SEARCH_FILMS
  } from './types';
 import { getFilms, getFilmsBySearch, deleteFilmById, sendFilm, getFilmById } from '../services/services';
 
@@ -32,9 +28,9 @@ export function addFilm(film){
     }
 }
 
-export function fetchStart(){
-    return { type: FETCH_START  };
-}
+export const showLoader = () => ({type: SHOW_LOADER});
+export const hideLoader = () => ({type: HIDE_LOADER});
+
 
 export const fetchError = (error) => ({
     type: FETCH_ERROR,
@@ -43,38 +39,45 @@ export const fetchError = (error) => ({
 
 export function fetchFilms(){
     return async dispatch => {
-        dispatch(fetchStart())
+        dispatch(showLoader());
         try {
             const response = await getFilms();
             dispatch({ type: FETCH_FILMS, payload: response })
         } catch(error){
             dispatch(fetchError(error.message));
         }
+        finally{
+            dispatch(hideLoader());
+        }
     }
 }
 
 export function fetchFilm(id){
-    console.log('in fetch film');
     return async dispatch => {
-        dispatch(fetchStart())
+        dispatch(showLoader());
         try {
             const response = await getFilmById(id);
-            console.log('tesssstt: ', response)
             dispatch({ type: FETCH_FILM, payload: response })
         } catch(error){
             dispatch(fetchError(error.message));
+        }
+        finally{
+            dispatch(hideLoader());
         }
     }
 }
 
 export function searchFilms(search){
     return async dispatch => {
-        dispatch(fetchStart())
+        dispatch(showLoader())
         try {
             const response = await getFilmsBySearch(search);
             dispatch({ type: FETCH_FILMS, payload: response })
         } catch(error){
             dispatch(fetchError(error.message));
+        }
+        finally{
+            dispatch(hideLoader());
         }
     }
 }
@@ -101,3 +104,4 @@ export function deleteFilmSuccess(id){
     payload: { id },
     })
   }
+

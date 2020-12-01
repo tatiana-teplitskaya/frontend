@@ -11,7 +11,6 @@ export async function getFilms(){
 
 export async function getFilmById(id){
     try {
-        console.log('ingetfilmbyid')
         const response = await fetch(`http://localhost:8080/about/${id}`);
         const json = await response.json();
         return json;
@@ -37,7 +36,6 @@ export async function deleteFilmById(id){
         const response = await fetch('http://localhost:8080/films/' + id, {
                 method: 'DELETE'
             });
-        //const result = await response.json();
         return response;
         } catch(error) {
             console.log(error);

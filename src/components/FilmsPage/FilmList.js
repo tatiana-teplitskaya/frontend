@@ -4,7 +4,7 @@ import './FilmList.css';
 import Film from './Film';
 import { deleteFilm } from '../../redux/actions';
 
-const FilmList = ({ films, deleteFilm, order}) => {
+const FilmList = ({ films, loader, deleteFilm, order}) => {
 
     function sortFilms(a, b) {
         const title1 = a.title.toLowerCase();
@@ -16,6 +16,14 @@ const FilmList = ({ films, deleteFilm, order}) => {
             return order === 'asc' ? -1 : 1;
         }
         return 0;
+    }
+
+    if(loader){
+        return (
+            <div className="loader">
+                <div className="lds-dual-ring"></div>
+            </div>
+        )
     }
 
     if(!films.length) {
@@ -41,8 +49,15 @@ const FilmList = ({ films, deleteFilm, order}) => {
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        loader: state.loader.isLoading
+    }
+
+}
+
 const mapDispatchToProps = {
     deleteFilm
 }
 
-export default connect(null, mapDispatchToProps)(FilmList);
+export default connect(mapStateToProps, mapDispatchToProps)(FilmList);

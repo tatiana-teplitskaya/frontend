@@ -104,7 +104,6 @@ class NewFilm extends Component{
                 format: this.state.format,
                 stars: this.state.stars
             };
-            console.log(newFilm);
             this.props.addFilm(newFilm);
             this.setState({
                 title: '',
@@ -118,7 +117,6 @@ class NewFilm extends Component{
     handleSubmitFile = async (e) => {
         e.preventDefault();
         const file = e.target.file.files[0];
-        console.log(e.target)
         if (file.type === "text/plain") {
             this.setState({
                 fileError: ''
