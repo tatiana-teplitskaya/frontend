@@ -2,3 +2,4 @@
 2. cd frontend/
 3. npm i
 4. npm start
+Приложение будет запущено на localhost:3000/
