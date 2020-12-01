@@ -28,12 +28,13 @@ class NewFilm extends Component{
             titleError: '',
             year: 0,
             yearError: '',
-            format: '',
+            format: 'DVD',
             formatError: '',
             stars: '',
             starsError: '',
             //file: '',
-            fileError: ''
+            fileError: '',
+            file: {}
     }
     }
     
@@ -52,13 +53,23 @@ class NewFilm extends Component{
         }}))
     }
 
-    // handleChangeFile = e => {
-    //     console.log(e.target)
-    //     this.setState( prev => (
-    //             {...prev, ...{
-    //             file: e.target.file.files[0]
-    //     }}))
-    // }
+    handleChangeFile = e => {
+        const file = e.target.files[0];
+
+        this.setState( prev => (
+                {
+                    ...prev,
+                file
+        }));
+        if(file.type === "text/plain") {
+            this.setState( prev => (
+                {
+                    ...prev,
+                    fileError: ''
+                }
+            ))
+        }
+    }
 
     validate = () => {
         let isError = false;
@@ -133,7 +144,6 @@ class NewFilm extends Component{
             this.setState({
                 fileError: 'Please choose .txt file'
             })
-            console.log('else');
         }
       };
 
@@ -144,14 +154,29 @@ class NewFilm extends Component{
                 <div className='content'>
                     <div className='block-form'>
                         <form className='new-film-form' onSubmit={this.handleSubmitFile}>
-                            <TextField 
-                            className='form-field'
-                            error={!!this.state.fileError}
-                            type="file" 
-                            required id="file" 
-                            label="File"
-                            helperText={this.state.fileError} 
-                            />
+                            <div className='input-wrapper'>
+                                <Button
+                                    className='input-button'
+                                    component="label"
+                                >
+                                    {
+                                        this.state.file.name || 'Upload File'
+                                    }
+                                    <input
+                                        type="file"
+                                        required
+                                        id="file"
+                                        hidden
+                                        onChange={this.handleChangeFile}
+                                    />
+                                </Button>
+                                {this.state.fileError
+                                    ? <div className='error-block'>
+                                        {this.state.fileError}
+                                    </div>
+                                    : null
+                                }
+                            </div>
                             <Button
                                 type="submit"
                                 variant="contained"
@@ -196,6 +221,7 @@ class NewFilm extends Component{
                                 id="format-id"
                                 value={this.state.format}
                                 name='format'
+                                // label='Format'
                                 onChange={this.handleInputChange}
                             >
                                 <MenuItem value="DVD">DVD</MenuItem>

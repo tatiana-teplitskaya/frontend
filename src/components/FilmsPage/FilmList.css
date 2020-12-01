@@ -33,7 +33,7 @@
 .film {
     position: relative;
     color: #A52A2A;
-    width: calc(33.333% - 20px);
+    width: calc(25% - 20px);
     height: 250px;
     margin: 10px;
     padding: 10px;

@@ -2,7 +2,7 @@
 
 .nav {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: teal;
+    background-color: hsl(180, 100%, 25%);
     height: 65px;
     width: 100%;
 }

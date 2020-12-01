@@ -1,0 +1,19 @@
+.film-info {
+    color: #A52A2A;
+    font-size: 16px;
+    width: calc(33.333% - 20px);
+    height: 250px;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-image: url('../../images/film.jpeg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: rgba(17, 17, 17, 0.5) 1px 1px 8px;
+}
