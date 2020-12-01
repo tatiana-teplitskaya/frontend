@@ -68,6 +68,7 @@ class NewFilm extends Component{
           yearError: '',
           starsError: '',
         };
+        
     
         if (this.state.title.length < 2 || this.state.title.toString().trim().length === 0) {
           isError = true;
@@ -79,11 +80,25 @@ class NewFilm extends Component{
             errors.yearError = "Year must be greater than 1850 and less than 2021";
         }
 
+        const hasDuplicates = arr => {
+            let uniqueElements = [];
+            arr.forEach(el => {
+                if(uniqueElements.indexOf(el.trim()) == -1){
+                    uniqueElements = [...uniqueElements, el.trim()];
+                } 
+            })
+            return uniqueElements.length == arr.length ? false : true;
+        }
+
         if (!(this.state.stars).toString().match(/^[A-Za-zА-Яа-яЁё, ]*$/)) {
             isError = true;
             errors.starsError = "Stars field should not contain numbers or symbols(exept ',')";
+          } else {
+                if (hasDuplicates(this.state.stars)){
+                isError = true;
+                errors.starsError = 'Stars field should not contain duplicates';
+            }
           }
-
     
         this.setState({
           ...this.state,
