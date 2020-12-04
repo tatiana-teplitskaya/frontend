@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export async function getFilms(){
     try {
         const response = await fetch('http://localhost:8080/films');
@@ -44,12 +46,22 @@ export async function deleteFilmById(id){
 }
 
 export async function sendFilm(film){
-    const response = await fetch('http://localhost:8080/films', {
+        const response = await fetch('http://localhost:8080/films', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             },
             body: JSON.stringify(film)
         });
+        // const status = response.status;
+        // if (status == 200) {
+        //     toast.success('Movie was successfully created');
+        // } else {
+        //     toast.error(response.statusText);
+        // }
+        // console.log(status);
         return response;
+
+
+    
 }

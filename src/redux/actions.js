@@ -8,20 +8,22 @@ import {
     DELETE_FILM_SUCCESS,
  } from './types';
 import { getFilms, getFilmsBySearch, deleteFilmById, sendFilm, getFilmById } from '../services/services';
+import { toast } from 'react-toastify';
 
 export function addFilm(film){
     return async dispatch => {
         try{
             const response = await sendFilm(film);
-            if (response.ok){
-                dispatch({ type: ADD_FILM_SUCCESS, payload: { film } })
+            if (response.status == 201){
+                toast.success('Movie was successfully created!');
+                dispatch({ type: ADD_FILM_SUCCESS, payload: { film } });
             } else {
-                dispatch(fetchError(response.message));
+                throw new Error(response.statusText);
              } 
         }  catch(error){
-
-            dispatch(fetchError(error.message));
             console.log(error);
+            toast.error(error.message);
+            throw new Error(error);
         }
 
         
@@ -86,13 +88,14 @@ export function deleteFilm(id){
     return async dispatch => {
         try {
             const response = await deleteFilmById(id);
-            if (response.ok) {
+            if (response.status === 200) {
                 dispatch(deleteFilmSuccess(id));
+                toast.success('Movie has been deleted!')
             } else {
-                dispatch(fetchError(response.message));
+                throw new Error('Something went wrong!');
             }
         } catch (error) {
-            dispatch(fetchError(error.message));
+            toast.error(error)
             console.log(error);
         }
     }

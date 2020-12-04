@@ -4,6 +4,8 @@ import {
     TextField,
     Button,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './NewFilm.css';
 import { addFilm } from '../../redux/actions';
 import { getArrOfFilms } from '../../helpers/filmsFormater';
@@ -108,7 +110,7 @@ class NewFilm extends Component{
         return isError;
       };
 
-    handleSubmit = (e) => {
+    handleSubmit = async (e) => {
         e.preventDefault();
         const err = this.validate();
         if (!err) {
@@ -119,13 +121,17 @@ class NewFilm extends Component{
                 format: this.state.format,
                 stars: this.state.stars
             };
-            this.props.addFilm(newFilm);
-            this.setState({
-                title: '',
-                year: 0,
-                format: '',
-                stars: []
-            })
+            try {
+                await this.props.addFilm(newFilm);
+                this.setState({
+                    title: '',
+                    year: 0,
+                    format: '',
+                    stars: []
+                })
+            } catch(error) {
+                console.log(error);
+            }
         }
     }
 

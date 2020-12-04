@@ -26,6 +26,7 @@ export const films = (state = [], action) => {
     }
 }
 
+
 export const loader = (state = {isLoading: false}, action) => {
     switch (action.type) {
         case SHOW_LOADER: return {...state, isLoading: true}
