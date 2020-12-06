@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 
-export async function getFilms(){
+export async function getFilms(currentPage, pageSize){
     try {
-        const response = await fetch('http://localhost:8080/films');
+        const response = await fetch(`http://localhost:8080/films?page=${currentPage}&limit=${pageSize}`);
         const json = await response.json();
         return json;
     } catch(error) {
@@ -24,7 +24,7 @@ export async function getFilmById(id){
 
 export async function getFilmsBySearch(search){
         try {
-            const response = await fetch(`http://localhost:8080/films/search?title=${search.title}&star=${search.star}`);
+            const response = await fetch(`http://localhost:8080/films/search?title=${search.title}&star=${search.star}&page=${search.currentSearchPage}&limit=${search.pageSize}`);
             const json = await response.json();
             return json;
         } catch(error) {

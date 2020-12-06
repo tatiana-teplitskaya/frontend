@@ -109,3 +109,27 @@
       transform: rotate(360deg);
     }
   }
+
+  .pages {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 20px;
+  }
+
+  .pages span {
+      padding: 5px;
+      margin: 3px;
+      cursor: pointer;
+      border-radius: 10%;
+      background-color: rgba(197, 189, 189, 0.5);
+  }
+
+  .pages span:hover {
+    box-shadow: rgba(17, 17, 17, 0.5) 1px 1px 8px;
+  }
+
+  .selectedPage {
+      font-weight: bold;
+      box-shadow: rgba(17, 17, 17, 0.5) 1px 1px 8px;
+  }

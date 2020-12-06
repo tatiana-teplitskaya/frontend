@@ -123,12 +123,12 @@ class NewFilm extends Component{
             };
             try {
                 await this.props.addFilm(newFilm);
-                this.setState({
-                    title: '',
-                    year: 0,
-                    format: '',
-                    stars: []
-                })
+                // this.setState({
+                //     title: '',
+                //     year: 0,
+                //     format: '',
+                //     stars: []
+                // })
             } catch(error) {
                 console.log(error);
             }

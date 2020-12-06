@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './FilmList.css';
 import Film from './Film';
-import { deleteFilm } from '../../redux/actions';
+import { deleteFilm, setCurrentPage, setCurrentSearchPage, searchFilms } from '../../redux/actions';
 
-const FilmList = ({ films, loader, deleteFilm, order}) => {
+const FilmList = ({ films, pageSize, totalFilmsCount, currentPage, loader, deleteFilm, setCurrentPage, setCurrentSearchPage, order, isSearched, searchFilms, searchTitle, searchStar}) => {
 
     function sortFilms(a, b) {
         const title1 = a.title.toLowerCase();
@@ -40,24 +40,53 @@ const FilmList = ({ films, loader, deleteFilm, order}) => {
         )
     });
 
-    return(
+    const onPageClickHandle = (p) => {
+        if (isSearched){
+            setCurrentSearchPage(p);
+            searchFilms({ title: searchTitle, star: searchStar, currentSearchPage: p, pageSize })
+        } else {
+            setCurrentPage(p);
+        }
+    }
 
+
+    let pagesCount = Math.ceil(totalFilmsCount / pageSize);
+    let pages = [];
+    for (let i = 1; i <= pagesCount; i++){
+        pages.push(i);
+    }
+
+    return(
+    <div>
         <div className='filmList'>
             {filmList}
         </div>
-        
+        <div className='pages'>
+            {pages.map( p => {
+                return <span className={currentPage === p ? 'selectedPage' : undefined}
+                        onClick = {() => { onPageClickHandle(p);
+                        console.log(p) }} >{p}</span>
+            })
+            }
+        </div>
+    </div>  
     )
 }
 
 const mapStateToProps = state => {
     return {
-        loader: state.loader.isLoading
+        loader: state.loader.isLoading,
+        searchTitle: state.films.searchTitle,
+        searchStar: state.films.searchStar,
     }
 
 }
 
 const mapDispatchToProps = {
-    deleteFilm
+    deleteFilm,
+    setCurrentPage,
+    setCurrentSearchPage,
+    searchFilms
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilmList);

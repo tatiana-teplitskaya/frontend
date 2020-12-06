@@ -10,7 +10,7 @@ function NavBar(){
             
             <ul>
                 <li>
-                    <NavLink className='link' activeClassName='active-link' exact to="/">Movies</NavLink>
+                    <NavLink className='link' activeClassName='active-link' exact to="/films">Movies</NavLink>
                 </li>
                 <li>
                     <NavLink className='link' activeClassName='active-link' exact to="/new-film">Create movie</NavLink>

@@ -2,10 +2,15 @@ import {
     ADD_FILM_SUCCESS,
     FETCH_FILMS,
     FETCH_FILM,
+    SEARCH_FILMS,
     FETCH_ERROR,
     SHOW_LOADER,
     HIDE_LOADER,
     DELETE_FILM_SUCCESS,
+    SET_CURRENT_PAGE,
+    SET_CURRENT_SEARCH_PAGE,
+    SET_SEARCH_STAR,
+    SET_SEARCH_TITLE
  } from './types';
 import { getFilms, getFilmsBySearch, deleteFilmById, sendFilm, getFilmById } from '../services/services';
 import { toast } from 'react-toastify';
@@ -39,12 +44,12 @@ export const fetchError = (error) => ({
     payload: { error },
   });
 
-export function fetchFilms(){
+export function fetchFilms(currentPage, pageSize){
     return async dispatch => {
         dispatch(showLoader());
         try {
-            const response = await getFilms();
-            dispatch({ type: FETCH_FILMS, payload: response })
+            const response = await getFilms(currentPage, pageSize);
+            dispatch({ type: FETCH_FILMS, payload: { films: response.films, totalCount: response.totalCount } })
         } catch(error){
             dispatch(fetchError(error.message));
         }
@@ -59,6 +64,7 @@ export function fetchFilm(id){
         dispatch(showLoader());
         try {
             const response = await getFilmById(id);
+            console.log()
             dispatch({ type: FETCH_FILM, payload: response })
         } catch(error){
             dispatch(fetchError(error.message));
@@ -74,7 +80,7 @@ export function searchFilms(search){
         dispatch(showLoader())
         try {
             const response = await getFilmsBySearch(search);
-            dispatch({ type: FETCH_FILMS, payload: response })
+            dispatch({ type: SEARCH_FILMS, payload: { films: response.films, totalCount: response.totalCount } })
         } catch(error){
             dispatch(fetchError(error.message));
         }
@@ -108,3 +114,30 @@ export function deleteFilmSuccess(id){
     })
   }
 
+export function setCurrentPage(pageNumber) {
+    return ({
+        type: SET_CURRENT_PAGE,
+        payload: pageNumber
+    })
+}
+
+export function setCurrentSearchPage(pageNumber) {
+    return ({
+        type: SET_CURRENT_SEARCH_PAGE,
+        payload: pageNumber
+    })
+}
+
+export function setSearchTitle(value) {
+    return ({
+        type: SET_SEARCH_TITLE,
+        payload: value
+    })
+}
+
+export function setSearchStar(value) {
+    return ({
+        type: SET_SEARCH_STAR,
+        payload: value
+    })
+}

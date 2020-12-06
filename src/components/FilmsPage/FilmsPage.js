@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { fetchFilms, searchFilms } from '../../redux/actions';
+import { fetchFilms, searchFilms, setSearchStar, setSearchTitle } from '../../redux/actions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,36 +21,38 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
+const FilmsPage = ({allFilms, pageSize, totalFilmsCount, currentPage, fetchFilms, searchFilms, currentSearchPage, setSearchStar,
+    setSearchTitle, searchStar, searchTitle}) => {
     const classes = useStyles();
 
-    const [searchTitle, setSearchTitle] = useState('');
-    const [searchStar, setSearchStar] = useState('');
     const [searchTimeout, setSearchTimeout] = useState(false);
     const [sortOrder, setSortOrder] = useState('asc');
+    const [isSearched, setIsSearched] = useState(false);
 
     useEffect(() => {
-        fetchFilms();
-    }, [fetchFilms]);
+        fetchFilms(currentPage, pageSize);
+    }, [fetchFilms, currentPage, pageSize]);
 
     function searchTitleChangeHanler(e) {
         setSearchTitle(e.target.value);
+        setIsSearched(true);
         if (searchTimeout !== false){
             clearTimeout(searchTimeout);
         }
         setSearchTimeout(setTimeout( value => {
             searchFilms(value);
-        }, 500, {title: e.target.value, star: searchStar}))
+        }, 500, {title: e.target.value, star: searchStar, currentSearchPage, pageSize}))
     }
 
     function searchStarChangeHanler(e) {
         setSearchStar(e.target.value);
+        setIsSearched(true);
         if (searchTimeout !== false){
             clearTimeout(searchTimeout);
         }
         setSearchTimeout(setTimeout( value => {
             searchFilms(value);
-        }, 500, {title: searchTitle, star: e.target.value}))
+        }, 500, {title: searchTitle, star: e.target.value, currentSearchPage, pageSize}))
     }
 
     function sortChangeHandler() {
@@ -103,7 +105,7 @@ const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
                         {sortOrder === 'asc' ? 'A - Z' : 'Z - A'}
                 </Button>
             </div>
-            <FilmsList films = { allFilms } order={sortOrder}/>
+            <FilmsList films = { allFilms } pageSize = {pageSize} totalFilmsCount = {totalFilmsCount} currentPage={currentPage} order={sortOrder} isSearched={isSearched}/>
         </div>
         
     )
@@ -113,14 +115,22 @@ const FilmsPage = ({allFilms, fetchFilms, searchFilms}) => {
 const mapStateToProps = state => {
 
     return {
-        allFilms: state.films
+        allFilms: state.films.films,
+        pageSize: state.films.pageSize,
+        totalFilmsCount: state.films.totalFilmsCount,
+        currentPage: state.films.currentPage,
+        currentSearchPage: state.films.currentSearchPage,
+        searchTitle: state.films.searchTitle,
+        searchStar: state.films.searchStar,
     }
 
 }
 
 const mapDispatchToProps = {
     fetchFilms,
-    searchFilms
+    searchFilms,
+    setSearchStar,
+    setSearchTitle
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilmsPage);
