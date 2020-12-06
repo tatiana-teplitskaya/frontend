@@ -1,5 +1,6 @@
 import { 
     ADD_FILM_SUCCESS,
+    ADD_FILMS_SUCCESS,
     FETCH_FILMS,
     FETCH_FILM,
     SEARCH_FILMS,
@@ -12,7 +13,7 @@ import {
     SET_SEARCH_STAR,
     SET_SEARCH_TITLE
  } from './types';
-import { getFilms, getFilmsBySearch, deleteFilmById, sendFilm, getFilmById } from '../services/services';
+import { getFilms, getFilmsBySearch, deleteFilmById, sendFilm, getFilmById, sendFile } from '../services/services';
 import { toast } from 'react-toastify';
 
 export function addFilm(film){
@@ -22,6 +23,26 @@ export function addFilm(film){
             if (response.status == 201){
                 toast.success('Movie was successfully created!');
                 dispatch({ type: ADD_FILM_SUCCESS, payload: { film } });
+            } else {
+                throw new Error(response.statusText);
+             } 
+        }  catch(error){
+            console.log(error);
+            toast.error(error.message);
+            throw new Error(error);
+        }
+
+        
+    }
+}
+
+ export function addFilms(file){
+    return async dispatch => {
+        try{
+            const response = await sendFile(file);
+            if (response.status == 201){
+                toast.success('Movies were successfully created!');
+                dispatch({ type: ADD_FILMS_SUCCESS, payload: response });
             } else {
                 throw new Error(response.statusText);
              } 

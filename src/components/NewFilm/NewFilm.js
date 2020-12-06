@@ -7,9 +7,9 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './NewFilm.css';
-import { addFilm } from '../../redux/actions';
-import { getArrOfFilms } from '../../helpers/filmsFormater';
+import { addFilm, addFilms } from '../../redux/actions';
 import NavBar from '../NavBar/NavBar';
+import { sendFilm } from '../../services/services';
 
 
 
@@ -137,18 +137,17 @@ class NewFilm extends Component{
 
     handleSubmitFile = async (e) => {
         e.preventDefault();
-        const file = e.target.file.files[0];
-        if (file.type === "text/plain") {
+        const filedata = e.target.file.files[0];
+        if (filedata.type === "text/plain") {
             this.setState({
                 fileError: ''
             }) 
-            let newFilms = [];
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = e => {
-                newFilms = getArrOfFilms(reader.result.split("\n"));
-                newFilms.forEach(film => this.props.addFilm(film));
-            };
+
+            let formData = new FormData();
+            formData.append('filedata', filedata);
+
+            this.props.addFilms(formData);
+
         } else {
             this.setState({
                 fileError: 'Please choose .txt file'
@@ -279,7 +278,8 @@ class NewFilm extends Component{
 }
 
 const mapDispatchToProps = {
-    addFilm
+    addFilm,
+    addFilms
 }
 
 export default connect(null, mapDispatchToProps)(NewFilm);

@@ -1,4 +1,5 @@
 import { ADD_FILM_SUCCESS, 
+         ADD_FILMS_SUCCESS,
          FETCH_FILMS,   
          FETCH_FILM,
          DELETE_FILM_SUCCESS,
@@ -24,6 +25,8 @@ export const films = (state = {films: [], pageSize: 10, totalFilmsCount: 0, curr
     switch(action.type){
         case ADD_FILM_SUCCESS:
             return {...state, films: [...state.films, action.payload.film]}
+        case ADD_FILMS_SUCCESS:
+            return {...state, films: [...state.films, action.payload]}
         case FETCH_FILMS:
             return {...state, films: action.payload.films, totalFilmsCount: action.payload.totalCount}
         case SEARCH_FILMS:

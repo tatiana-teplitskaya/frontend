@@ -1,4 +1,5 @@
 export const ADD_FILM_SUCCESS = 'ADD_FILM_SUCCESS';
+export const ADD_FILMS_SUCCESS = 'ADD_FILMS_SUCCESS';
 export const FETCH_FILMS = 'FETCH_FILMS';
 export const FETCH_FILM = 'FETCH_FILM';
 export const SEARCH_FILMS = 'SEARCH_FILMS';

@@ -62,6 +62,13 @@ export async function sendFilm(film){
         // console.log(status);
         return response;
 
+}
 
-    
+export async function sendFile(file){
+    const response = await fetch('http://localhost:8080/file', {
+                method: 'POST',
+                body: file
+            })
+
+    return response;
 }
