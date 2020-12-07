@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './FilmList.css';
 import Film from './Film';
-import { deleteFilm, setCurrentPage, setCurrentSearchPage, searchFilms } from '../../redux/actions';
+import { deleteFilm, setCurrentPage, setCurrentSearchPage, searchFilms, fetchFilms } from '../../redux/actions';
 
 const FilmList = ({ films, pageSize, totalFilmsCount, currentPage, loader, deleteFilm, setCurrentPage, setCurrentSearchPage, order, isSearched, searchFilms, searchTitle, searchStar}) => {
 
     function sortFilms(a, b) {
-        const title1 = a.title.toLowerCase();
-        const title2 = b.title.toLowerCase();
+        const title1 = a.title?.toLowerCase();
+        const title2 = b.title?.toLowerCase();
         if (title1 > title2) {
             return order === 'asc' ? 1 : -1;
         }
@@ -35,7 +35,7 @@ const FilmList = ({ films, pageSize, totalFilmsCount, currentPage, loader, delet
     let filmList = films.sort(sortFilms).map( (film) => {
         return (
 
-            <Film key={film._id} film={film} handleDelete={deleteFilm}/>
+            <Film key={film._id} film={film} handleDelete={deleteFilm} fetchFilms={fetchFilms} currentPage={currentPage} pageSize={pageSize}/>
             
         )
     });
@@ -86,7 +86,8 @@ const mapDispatchToProps = {
     deleteFilm,
     setCurrentPage,
     setCurrentSearchPage,
-    searchFilms
+    searchFilms,
+    fetchFilms
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilmList);

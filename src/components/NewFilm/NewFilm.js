@@ -146,7 +146,7 @@ class NewFilm extends Component{
             let formData = new FormData();
             formData.append('filedata', filedata);
 
-            this.props.addFilms(formData);
+            await this.props.addFilms(formData);
 
         } else {
             this.setState({

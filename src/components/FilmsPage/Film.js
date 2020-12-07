@@ -4,12 +4,13 @@ import { NavLink } from "react-router-dom";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 
-function Film({handleDelete, film}){
+function Film({handleDelete, film, fetchFilms, currentPage, pageSize}){
 
-    function handleDeleteFilm(e) {
+    async function handleDeleteFilm(e) {
         e.preventDefault()
 
-        handleDelete(film._id)
+        await handleDelete(film._id);
+        await fetchFilms(currentPage, pageSize);
     }
 
     return (
